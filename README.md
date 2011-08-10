@@ -24,6 +24,9 @@ To compile the extension in the directory in which *.pyx and *.c reside:
     
     python setup.py build_ext --inplace
 
+If `setup.py` detects that you do not have `cython` installed, it will build the modules from the *.c files. You will, however, need
+cython if you intend to modify or add force fields since you will have to re-cythonize the source.
+
 For further information on compiling cython extensions see:  
 [http://docs.cython.org/src/userguide/source_files_and_compilation.html](http://docs.cython.org/src/userguide/source_files_and_compilation.html)
 
@@ -33,4 +36,4 @@ Usage
 
 See simulate.py for a simple example (requires h5py for storage of coordinates and velocities)
 
-Additional force fields may be added by inheriting from cdef class Force and overriding the evaluate method.
+Additional force fields may be added by inheriting from `cdef class Force` and overriding the `evaluate` method.
