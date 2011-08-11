@@ -11,6 +11,11 @@ cdef class Force:
         return 0
 
 cdef class RouxPanForce(Force):
+    """
+    2-dimensional potential defined in:
+    Pan and Roux (2008) Building Markov state models along pathways to determine free energies and rates of transitions
+    J. Chem. Phys. 129, 064107; doi:10.1063/1.2959573 
+    """
 
     @cython.boundscheck(False)
     @cython.wraparound(False) 
@@ -44,6 +49,12 @@ cdef class RouxPanForce(Force):
         return 0
         
 cdef class MuellerForce(Force):
+    """
+    2-dimensional potential defined in:
+    Muller, K., and Brown, L.D. 1979. Location of saddle points and minimum energy paths by a constrained simplex
+    optimization procedure. Theoret. Chem. Acta 53, 75–93.
+
+    """
 
     @cython.boundscheck(False)
     @cython.wraparound(False) 
