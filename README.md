@@ -10,7 +10,7 @@ Eric Vanden-Eijnden and Giovanni Ciccotti
 _Chemical Physics Letters_ (2006) 429, 310-316  
 [http://dx.doi.org/10.1016/j.cplett.2006.07.086](http://dx.doi.org/10.1016/j.cplett.2006.07.086)  
 
-If you use this code in a publication, please site the above paper.
+If you use this code in a publication, please cite the above paper.
 
 Installation
 ---------------
