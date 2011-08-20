@@ -52,7 +52,7 @@ cdef class MuellerForce(Force):
     """
     2-dimensional potential defined in:
     Muller, K., and Brown, L.D. 1979. Location of saddle points and minimum energy paths by a constrained simplex
-    optimization procedure. Theoret. Chem. Acta 53, 75–93.
+    optimization procedure. Theoret. Chem. Acta 53, 75-93.
 
     """
 
@@ -61,16 +61,6 @@ cdef class MuellerForce(Force):
     cpdef int evaluate(self,np.ndarray[DTYPE_t, ndim=1] coords, np.ndarray[DTYPE_t, ndim=1] force):
         cdef double x,y,fx,fy,b, xt, yt
         
-        # Parameters
-        #ai[4] = {-1.0,  -1.0,  -6.5,  0.7}
-        #bi[4] = { 0.0,  0.0,   11.0,  0.6}
-        #ci[4] = {-10.0, -10.0, -6.5,  0.7}
-
-        #xi[4] = {1.0,   0.0,   -0.5, -1.0}
-        #yi[4] = {0.0,   0.5,    1.5,  1.0}
-
-        #Ai[4] = {-200.0,-100.0,-170.0,15.0}
-
         x = coords[0]
         y = coords[1]
         
@@ -107,4 +97,59 @@ cdef class MuellerForce(Force):
         
         return 0
     
+cdef class RuggedMuellerForce(Force):
+    """
+    Rugged version of the 2-dimensional potential defined in:
+    Muller, K., and Brown, L.D. 1979. Location of saddle points and minimum energy paths by a constrained simplex
+    optimization procedure. Theoret. Chem. Acta 53, 75-93.
 
+    """
+
+    @cython.boundscheck(False)
+    @cython.wraparound(False) 
+    cpdef int evaluate(self,np.ndarray[DTYPE_t, ndim=1] coords, np.ndarray[DTYPE_t, ndim=1] force):
+        cdef double x,y,fx,fy,b,xt,yt
+        cdef double twopik,a
+
+        twopik = 5.0*6.283185307179586
+        a = 9.0
+
+        x = coords[0]
+        y = coords[1]
+        
+        fx = 0
+        fy = 0
+        
+        # 0
+        b = -200.0*exp(-(x-1.0)**2 - 10.0*y**2)
+        fx += -2.0*(x-1.0)*b
+        fy += -20.0*y*b
+        
+        # 1
+        b = -100.0*exp(-x**2 -10.0*(y-0.5)**2)
+        fx += -2.0*x*b
+        fy += -20.0*(y-0.5)*b
+        
+        #2
+        xt = x+0.5
+        yt = y-1.5
+        b = -170.0*exp(-6.5*xt**2 + 11.0*xt*yt -6.5*yt**2)
+        fx += (-13.0*xt + 11.0*yt)*b
+        fy += (11.0*xt -13.0*yt)*b
+        
+        #3
+        xt = x+1
+        yt = y-1
+        b = 15.0*exp(0.7*xt**2 + 0.6*xt*yt + 0.7*yt**2)
+        fx += (1.4*xt + 0.6*yt)*b
+        fy += (0.6*xt + 1.4*yt)*b 
+        
+        # rugged terms
+        fx += a*twopik*cos(twopik*x)*sin(twopik*y)
+        fy += a*twopik*sin(twopik*x)*cos(twopik*y)
+        
+        force[0] = -fx
+        force[1] = -fy
+        
+        return 0
+    
