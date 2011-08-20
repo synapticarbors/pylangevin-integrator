@@ -3,6 +3,8 @@ cimport numpy as np
 
 cdef extern from "math.h":
     double exp(double)
+    double cos(double)
+    double sin(double)
 
 DTYPE = np.float64
 ctypedef np.float64_t DTYPE_t
