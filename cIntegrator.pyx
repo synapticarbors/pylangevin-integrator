@@ -29,7 +29,7 @@ cdef class Integrator:
     cdef DTYPE_t* _Fn
     cdef rk_state *rng_state
     
-    def __init__(self,ForceFields.Force forcefield, double mass, double nu, double beta, double dt, unsigned int dims, unsigned long seed):
+    def __cinit__(self,ForceFields.Force forcefield, double mass, double nu, double beta, double dt, unsigned int dims, unsigned long seed):
         self._Fn = <DTYPE_t*>PyMem_Malloc(dims*sizeof(DTYPE_t))
         self.rng_state = <rk_state*>PyMem_Malloc(sizeof(rk_state)) 
         
